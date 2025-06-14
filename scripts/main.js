@@ -1,5 +1,7 @@
-let user = "test"
-let passwd = "123"
+import {getInfosUsers} from './getUsers.js'
+
+let user = getInfosUsers().user
+let passwd = getInfosUsers().passwd
 
 
 document.getElementById("enter-button-login").addEventListener("click", (e) => {
@@ -22,4 +24,3 @@ function enterLogin() {
     }
 
 }
-
