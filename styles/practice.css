@@ -1,0 +1,9 @@
+#space-for-code {
+    height: 300px; 
+    border-radius: 8px; 
+    border: 1px solid #ccc;
+}
+
+#button-verificar {
+    background-color: var(--background-resp-01);
+}

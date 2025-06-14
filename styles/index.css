@@ -1,0 +1,48 @@
+@import url(game.css);
+@import url(practice.css);
+@import url(feedback.css);
+@import url(aprender.css);
+
+:root {
+
+    --background-container: #d9d9d9; 
+    --background-showdown-container: rgba(122, 125, 128, 0.301); 
+    --background-question-exercise: #8c52ff28; 
+    --background-exercises-text: #a6a6a659; 
+    --background-resp-01: #7ed957; 
+    --background-resp-02: #ffde59; 
+    --background-resp-03: #38b6ff; 
+    --background-resp-04: #ff3131;
+    --font-color: #000000;
+}
+
+#slide-bar {
+    width: 220px; 
+    top: 56px;
+}
+
+main{
+    display: flex;
+    /* min-height: 100vh; */
+    margin-top: 5%;
+    align-items: center;
+    justify-content: center;
+}
+
+#div-master-index{
+    max-width: 700px;
+}
+
+.dropdown-menu {
+    position: absolute !important;
+    top: 100% !important;
+    right: 0 !important;
+    left: auto !important;
+    z-index: 1050;
+}
+
+#userMenu {
+    width: 40px; 
+    height: 40px; 
+    padding: 0;
+}
