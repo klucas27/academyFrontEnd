@@ -1,8 +1,8 @@
 import { accessOpen } from './accessOpenAi.js'
 
-import {getInfosUsers} from './getUsers.js'
+import {editUser} from '../scripts/updateUser.js'
 
-let user = getInfosUsers().user
+editUser();
 
 let desafio_proposto = ""
 let editorInstance = null
@@ -11,7 +11,6 @@ let desafiosAnteriores = [];
 
 document.addEventListener("DOMContentLoaded", () => {
     createNewChallenge();
-    editNameUser();
 
     document.getElementById("button-verificar").addEventListener("click", (e) => {
         e.preventDefault();
@@ -100,8 +99,3 @@ async function verificarDesafio() {
         document.getElementById("question-prop").innerText = dados.comentario_do_codigo
 
 }
-
-
-async function editNameUser() {
-        document.getElementById("dropdown-username").innerText = user
-    }

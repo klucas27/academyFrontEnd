@@ -1,12 +1,4 @@
-import {getInfosUsers} from './getUsers.js'
 
-let user = getInfosUsers().user
+import {editUser} from '../scripts/updateUser.js'
 
-document.addEventListener("DOMContentLoaded", () => {
-    editNameUser()
-})
-
-
-async function editNameUser() {
-        document.getElementById("dropdown-username").innerText = user
-    }
+editUser();

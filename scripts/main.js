@@ -1,7 +1,4 @@
-import {getInfosUsers} from './getUsers.js'
-
-let user = getInfosUsers().user
-let passwd = getInfosUsers().passwd
+import { getInfosUsers } from './getUsers.js'
 
 
 document.getElementById("enter-button-login").addEventListener("click", (e) => {
@@ -10,13 +7,19 @@ document.getElementById("enter-button-login").addEventListener("click", (e) => {
 })
 
 
-function enterLogin() {
+async function enterLogin() {
+
     const user_add = document.getElementById("usuario").value;
     const passwd_add = document.getElementById("senha").value;
     document.getElementById('login-error').classList.add('d-none');
 
-    if (user_add == user && passwd_add == passwd) {
-        console.log(user_add, passwd_add);
+    const data = await getInfosUsers(user_add, passwd_add);
+
+    if (data.sucesso === true) {
+
+        sessionStorage.setItem("token", data.token);
+        sessionStorage.setItem("user", user_add);
+
         window.location.href = "home.html"
 
     } else {
