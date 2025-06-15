@@ -1,10 +1,12 @@
+import {getConnectionFetch} from './connectionFetch.js'
 
 const token = sessionStorage.getItem('token');
 
 
 export async function editUser() {
 
-    fetch("https://estokeasy.com.br/academyapi/users/private", {
+    // fetch("https://estokeasy.com.br/academyapi/users/private", {
+    fetch(`${getConnectionFetch()}users/private`, {
     // fetch("http://localhost:3006/users/private", {   // // Para testes Locais
         method: "GET",
         headers: {
