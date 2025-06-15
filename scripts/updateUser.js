@@ -4,7 +4,8 @@ const token = sessionStorage.getItem('token');
 
 export async function editUser() {
 
-    fetch("http://localhost:3006/users/private", {
+    fetch("https://estokeasy.com.br/academyapi/users/private", {
+    // fetch("http://localhost:3006/users/private", {   // // Para testes Locais
         method: "GET",
         headers: {
             "Authorization": `Bearer ${token}`
