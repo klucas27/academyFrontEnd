@@ -6,9 +6,7 @@ export async function getInfosUsers(user, passwd) {
 
     try {
         console.log(getConnectionFetch())
-        // const response = await fetch("https://estokeasy.com.br/academyapi/users/userGet", {
         const response = await fetch(`${getConnectionFetch()}users/userGet`, {
-        // const response = await fetch("http://localhost:3006/users/userGet", {     // Para testes Locais
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
