@@ -2,7 +2,7 @@ import { getConnectionFetch } from './connectionFetch.js'
 
 const token = sessionStorage.getItem('token');
 
-document.getElementById("exit-main").addEventListener('click', (e) =>{
+document.getElementById("exit-main").addEventListener('click', (e) => {
     exitUser()
 })
 
@@ -32,6 +32,35 @@ export async function editUser() {
             window.location.href = "index.html";
         });
 }
+
+
+export async function atualizarStatusUsuario(life = null, points = null) {
+    const token = sessionStorage.getItem('token');
+    const username = sessionStorage.getItem('user');
+
+    try {
+        const response = await fetch(`${getConnectionFetch()}users/updateStats`, {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ username, life, points })
+        });
+
+        const data = await response.json();
+
+        if (data.sucesso) {
+            console.log(data.mensagem);
+        } else {
+            console.warn("Falha ao atualizar:", data.mensagem);
+        }
+
+    } catch (error) {
+        console.error("Erro na atualização:", error);
+    }
+}
+
 
 
 function exitUser() {

@@ -1,6 +1,6 @@
 import { accessOpen } from './accessOpenAi.js'
 
-import {editUser} from '../scripts/updateUser.js'
+import {editUser, atualizarStatusUsuario} from '../scripts/updateUser.js'
 
 editUser();
 
@@ -76,6 +76,8 @@ async function carregarPergunta() {
 async function verResposta(resp) {
 
     if (resp == resp_question) {
+        atualizarStatusUsuario(null,10)
+        editUser()
         console.log("Acertou!")
         document.getElementById("notification-acerto").style.display = "block"
         document.getElementById("notification-acerto").style.color = "green"
@@ -85,6 +87,8 @@ async function verResposta(resp) {
     }
     else {
         console.log("Errou!")
+        atualizarStatusUsuario(-1,null)
+        editUser()
         document.getElementById("notification-acerto").style.display = "block"
         document.getElementById("notification-acerto").innerText = "Revise novamente, Resposta Errada!"
         document.getElementById("notification-acerto").style.color = "red"
