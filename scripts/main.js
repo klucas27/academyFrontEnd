@@ -15,6 +15,10 @@ async function enterLogin() {
 
     const data = await getInfosUsers(user_add, passwd_add);
 
+    document.getElementById('mensage-back').innerText = data.mensagem
+
+    console.log(data.usuario)
+
     if (data.sucesso === true) {
 
         sessionStorage.setItem("token", data.token);
