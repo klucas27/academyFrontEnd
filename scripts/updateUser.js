@@ -2,63 +2,40 @@ import { getConnectionFetch } from './connectionFetch.js'
 
 const token = sessionStorage.getItem('token');
 
+document.getElementById("exit-main").addEventListener('click', (e) =>{
+    exitUser()
+})
+
 
 export async function editUser() {
 
-    // fetch(`${getConnectionFetch()}users/private`, {
-    //     method: "GET",
-    //     headers: {
-    //         "Authorization": `Bearer ${token}`
-    //     }
-    // })
-
-    const username = sessionStorage.getItem("user")
-
-    try {
-        const response = await fetch(`${getConnectionFetch()}users/private`, {
-            method: 'POST',
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-
-            body: JSON.stringify({ username })
-        });
-
-        const data = await response.json();
-
-        if (data.sucesso) {
-            console.log(data.mensagem);
-            document.getElementById("dropdown-username").innerText = username;
-            document.getElementById("life-counts").innerText = data.life;
-            document.getElementById("points-counts").innerText = data.points;
+    fetch(`${getConnectionFetch()}users/private`, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${token}`
         }
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (!data.sucesso) {
+                alert("Acesso negado. Faça login novamente.");
+                window.location.href = "index.html";
+            } else {
+                console.log(data.mensagem);
+                document.getElementById("dropdown-username").innerText = sessionStorage.getItem("user");
+                document.getElementById("life-counts").innerText = data.usuario.life;
+                document.getElementById("points-counts").innerText = data.usuario.points;
+            }
+        })
+        .catch(err => {
+            console.error("Erro:", err);
+            window.location.href = "index.html";
+        });
+}
 
-        // if (result.sucesso) {
-        //     document.getElementById('register-message').textContent = result.mensagem;
-        // } else {
-        //     document.getElementById('register-message').textContent = "Erro: " + result.mensagem;
-        // }
 
-    } catch (error) {
-        console.error("Erro:", error);
-        // document.getElementById('mensagem').textContent = "Erro ao registrar.";
-    }
+function exitUser() {
 
-
-
-
-    // .then(response => response.json())
-    // .then(data => {
-    //     if (!data.sucesso) {
-    //         alert("Acesso negado. Faça login novamente.");
-    //         window.location.href = "index.html";
-    //     } else {
-
-    //     }
-    // })
-    // .catch(err => {
-    //     console.error("Erro:", err);
-    //     window.location.href = "index.html";
-    // });
+    sessionStorage.clear();
+    window.location.href = '../index.html';
 }

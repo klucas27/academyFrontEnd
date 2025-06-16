@@ -15,9 +15,7 @@ async function enterLogin() {
 
     const data = await getInfosUsers(user_add, passwd_add);
 
-    document.getElementById('mensage-back').innerText = data.mensagem
-
-    console.log(data.usuario)
+    document.getElementById('login-error').innerText = data.mensagem
 
     if (data.sucesso === true) {
 
@@ -28,6 +26,7 @@ async function enterLogin() {
 
     } else {
         document.getElementById('login-error').classList.remove('d-none');
+        document.getElementById('login-error').innerText = data.mensagem
     }
 
 }
