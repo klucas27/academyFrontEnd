@@ -18,6 +18,7 @@ export async function getInfosUsers(user, passwd) {
         });
 
         let data = await response.json();
+        console.log(data)
 
         return data; // ← retorna {sucesso: true/false, mensagem: "..."}
 
