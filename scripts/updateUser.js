@@ -19,7 +19,7 @@ export async function editUser() {
         .then(data => {
             if (!data.sucesso) {
                 alert("Acesso negado. Faça login novamente.");
-                window.location.href = "index.html";
+                window.location.href = "../index.html";
             } else {
                 console.log(data.mensagem);
                 document.getElementById("dropdown-username").innerText = sessionStorage.getItem("user");
