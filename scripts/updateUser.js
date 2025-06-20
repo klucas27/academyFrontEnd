@@ -29,7 +29,7 @@ export async function editUser() {
         })
         .catch(err => {
             console.error("Erro:", err);
-            window.location.href = "index.html";
+            window.location.href = "../index.html";
         });
 }
 
