@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
 async function carregarPergunta() {
     // Adiciona os enunciados anteriores ao prompt
     const enunciadosAnteriores = questoesAnteriores.length > 0 
-        ? `Não repita nenhuma das seguintes questões já exibidas: ${questoesAnteriores.join(" | ")}.` 
+        ? `Não repita nenhuma das seguintes questões já exibidas (elabore questoẽs totalmente diferentes, de outros topicos outras formas): ${questoesAnteriores.join(" | ")}.` 
         : "";
 
     const prompt = `Gere uma Questão de múltipla escolha sobre JavaScript 
