@@ -1,6 +1,6 @@
 import { accessOpen } from './accessOpenAi.js'
 
-import {editUser} from '../scripts/updateUser.js'
+import { editUser, atualizarStatusUsuario } from '../scripts/updateUser.js'
 
 editUser();
 
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
         e.preventDefault();
         verificarDesafio();
     })
-    
+
     document.getElementById("btn-proxima-desafio").addEventListener("click", (e) => {
         e.preventDefault();
         createNewChallenge();
@@ -43,23 +43,30 @@ async function editEditor() {
 }
 
 async function createNewChallenge() {
-    const prompt = `
-Gere um desafio para um aluno que está aprendendo a programar em JavaScript, para que ele faça um pequeno bloco de código.
-NÃO repita nenhum dos desafios já propostos abaixo:
-${desafiosAnteriores.map((d, i) => `${i + 1}. ${d}`).join('\n')}
+    let dados;
+    let tentativas = 0;
+    const maxTentativas = 3;
 
-Formato JSON:
-{
-  "desafio": "..."
-}
+    do {
+        const prompt = `
+        Gere um desafio para um aluno que está aprendendo a programar em JavaScript, para que ele faça um pequeno bloco de código.
+        NÃO repita nenhum dos desafios já propostos abaixo:
+        ${desafiosAnteriores.map((d, i) => `${i + 1}. ${d}`).join('\n')}
 
-O Desafio deve ser (Obrigatoriamente):
-- Um pequeno trecho de código (uso de repetições, condição, usos de tipos de dados, funções entre outros assuntos de js).
-- coloque o desafio em 'desafio' no json.
-- Sempre gere um desafio diferente já proposto!
-`;
+        Formato JSON:
+        {
+        "desafio": "..."
+        }
 
-    const dados = await accessOpen(prompt);
+        O Desafio deve ser (Obrigatoriamente):
+        - Um pequeno trecho de código (uso de repetições, condição, usos de tipos de dados, funções entre outros assuntos de js).
+        - coloque o desafio em 'desafio' no json.
+        - Sempre gere um desafio diferente já proposto!
+        `;
+
+        dados = await accessOpen(prompt);
+        tentativas++;
+    } while (desafiosAnteriores.includes(dados.desafio) && tentativas < maxTentativas);
 
     document.getElementById("question-prop").innerText = dados.desafio;
     desafio_proposto = dados.desafio;
@@ -80,9 +87,10 @@ async function verificarDesafio() {
 
     const prompt = `
         Corrija o código abaixo (caso esteja correto, apenas comente linha por linha) e corrija os erros comentando linha por linha e explicando cada detalhe para o aluno que escreveu este código. 
-        coloque a correção no 'comentario_do_codigo'
+        coloque a correção no 'comentario_do_codigo', dentro de 'nota' insira uma nota de 0 a 10 do tipo int do código abaixo.
         NÃO coloque aspas duplas dentro do valor de 'comentario_do_codigo', use apenas aspas simples.
         Retorne apenas o JSON, sem explicações extras e sem o codigo, apenas comentarios e explicações.
+
 
         ATENÇÃO: Informe somente o JSON, sem texto antes ou depois.
         desafio proposto: ${desafio_proposto}
@@ -91,11 +99,16 @@ async function verificarDesafio() {
         Formato JSON:
         {
         "comentario_do_codigo": "..."
+        "nota": "..."
         }
         `;
-    
-        const dados = await accessOpen(prompt)
 
-        document.getElementById("question-prop").innerText = dados.comentario_do_codigo
+    const dados = await accessOpen(prompt)
+
+    document.getElementById("question-prop").innerText = dados.comentario_do_codigo
+    if (dados.nota >= 6) {
+        await atualizarStatusUsuario(0, 10)
+        await editUser()
+    }
 
 }

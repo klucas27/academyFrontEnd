@@ -1,3 +1,7 @@
+/**
+ * Config para a pagina Game, gera perguntas aleatorias para o usuario
+ */
+
 import { accessOpen } from './accessOpenAi.js'
 
 import {editUser, atualizarStatusUsuario} from '../scripts/updateUser.js'
@@ -5,9 +9,9 @@ import {editUser, atualizarStatusUsuario} from '../scripts/updateUser.js'
 editUser();
 
 let resp_question = ""
+let questoesAnteriores = [] // Armazena os enunciados já exibidos
 
 document.addEventListener("DOMContentLoaded", () => {
-
     carregarPergunta();
 
     document.getElementById("btn-proxima-questao").addEventListener("click", (e) => {
@@ -31,15 +35,18 @@ document.addEventListener("DOMContentLoaded", () => {
         e.preventDefault();
         verResposta('d');
     });
-
-
 })
 
 async function carregarPergunta() {
+    // Adiciona os enunciados anteriores ao prompt
+    const enunciadosAnteriores = questoesAnteriores.length > 0 
+        ? `Não repita nenhuma das seguintes questões já exibidas: ${questoesAnteriores.join(" | ")}.` 
+        : "";
 
     const prompt = `Gere uma Questão de múltipla escolha sobre JavaScript 
     (uso de for, while, condições, arrays, tipos de dados, formatações, abre e fecha conchets, codigos com erros, 
-    outros assuntos para logicas com js). sompre gere uma questões diferente das anteriores.
+    outros assuntos para logicas com js). Sempre gere uma questão diferente das anteriores.
+    ${enunciadosAnteriores}
     Formato JSON:
         {
         "enunciado": "...",
@@ -56,7 +63,12 @@ async function carregarPergunta() {
     - Informe a resposta correta em 'respostaCorreta'.
     `;
 
-    const dados = await accessOpen(prompt)
+    const dados = await accessOpen(prompt);
+
+    // Salva o enunciado para evitar repetição
+    if (dados.enunciado && !questoesAnteriores.includes(dados.enunciado)) {
+        questoesAnteriores.push(dados.enunciado);
+    }
 
     document.getElementById('exercises-text').innerText = dados.codigo;
 
@@ -70,15 +82,14 @@ async function carregarPergunta() {
     resp_question = dados.respostaCorreta
 
     document.getElementById("notification-acerto").style.display = "none"
-
 }
 
 async function verResposta(resp) {
 
     if (resp == resp_question) {
-        atualizarStatusUsuario(null,10)
-        editUser()
-        console.log("Acertou!")
+        await atualizarStatusUsuario(0,10)
+        await editUser()
+        // console.log("Acertou!")
         document.getElementById("notification-acerto").style.display = "block"
         document.getElementById("notification-acerto").style.color = "green"
         document.getElementById("notification-acerto").innerText = "Parabéns Você Acertou!"
@@ -86,9 +97,10 @@ async function verResposta(resp) {
         carregarPergunta()
     }
     else {
-        console.log("Errou!")
-        atualizarStatusUsuario(-1,null)
-        editUser()
+        // console.log("Errou!")
+        await atualizarStatusUsuario(-1, 0)
+        await editUser()
+        // location.reload()
         document.getElementById("notification-acerto").style.display = "block"
         document.getElementById("notification-acerto").innerText = "Revise novamente, Resposta Errada!"
         document.getElementById("notification-acerto").style.color = "red"

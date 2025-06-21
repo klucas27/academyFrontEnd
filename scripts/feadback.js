@@ -20,7 +20,7 @@ function sendFeedback() {
     let mensagem = document.getElementById("message-insert").value
     let nota_plataforma = document.getElementById("rating-insert").value
 
-    console.log(nome, nota_plataforma)
+    // console.log(nome, nota_plataforma)
 
 
     fetch(`${getConnectionFetch()}users/feedback`, {

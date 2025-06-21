@@ -21,10 +21,19 @@ export async function editUser() {
                 alert("Acesso negado. Faça login novamente.");
                 window.location.href = "../index.html";
             } else {
-                console.log(data.mensagem);
                 document.getElementById("dropdown-username").innerText = sessionStorage.getItem("user");
-                document.getElementById("life-counts").innerText = data.usuario.life;
-                document.getElementById("points-counts").innerText = data.usuario.points;
+
+                if (data.usuario.life <= 0) {
+                    alert("Você Perdeu todas as suas Vidas, seus pontos foram Restaurados!")
+                    atualizarStatusUsuario(0, 0)
+                    editUser()
+                    document.getElementById("life-counts").innerText = data.usuario.life
+                    document.getElementById("points-counts").innerText = data.usuario.points
+
+                } else {
+                    document.getElementById("life-counts").innerText = data.usuario.life;
+                    document.getElementById("points-counts").innerText = data.usuario.points;
+                }
             }
         })
         .catch(err => {
@@ -50,11 +59,11 @@ export async function atualizarStatusUsuario(life = null, points = null) {
 
         const data = await response.json();
 
-        if (data.sucesso) {
-            console.log(data.mensagem);
-        } else {
-            console.warn("Falha ao atualizar:", data.mensagem);
-        }
+        // if (data.sucesso) {
+        //     console.log(data.mensagem);
+        // } else {
+        //     console.warn("Falha ao atualizar:", data.mensagem);
+        // }
 
     } catch (error) {
         console.error("Erro na atualização:", error);

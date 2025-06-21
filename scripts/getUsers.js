@@ -2,10 +2,12 @@ import {getConnectionFetch} from './connectionFetch.js'
 
 const sucesso = null
 
+
+// Obtem informações do usuario
 export async function getInfosUsers(user, passwd) {
 
     try {
-        console.log(getConnectionFetch())
+        // console.log(getConnectionFetch())
         const response = await fetch(`${getConnectionFetch()}users/userGet`, {
             method: "POST",
             headers: {
@@ -18,7 +20,7 @@ export async function getInfosUsers(user, passwd) {
         });
 
         let data = await response.json();
-        console.log(data)
+        // console.log(data)
 
         return data; // ← retorna {sucesso: true/false, mensagem: "..."}
 
