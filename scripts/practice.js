@@ -84,9 +84,13 @@ async function verificarDesafio() {
         return;
     }
     const resposta_aluno = editorInstance.getValue()
+    if (resposta_aluno == ""){
+        return
+    }
+    console.log(resposta_aluno)
 
     const prompt = `
-        Corrija o código abaixo (caso esteja correto, apenas comente linha por linha) e corrija os erros comentando linha por linha e explicando cada detalhe para o aluno que escreveu este código. 
+        Corrija e de os passos para corrigir o código abaixo (caso esteja correto, apenas comente linha por linha) e corrija os erros comentando linha por linha e explicando cada detalhe para o aluno que escreveu este código. 
         coloque a correção no 'comentario_do_codigo', dentro de 'nota' insira uma nota de 0 a 10 do tipo int do código abaixo.
         NÃO coloque aspas duplas dentro do valor de 'comentario_do_codigo', use apenas aspas simples.
         Retorne apenas o JSON, sem explicações extras e sem o codigo, apenas comentarios e explicações.
@@ -95,6 +99,7 @@ async function verificarDesafio() {
         ATENÇÃO: Informe somente o JSON, sem texto antes ou depois.
         desafio proposto: ${desafio_proposto}
 
+        Se Resposta do aluno for vazio, forneça a nota: 0!
         resposta do aluno: ${resposta_aluno}
         Formato JSON:
         {
@@ -105,10 +110,15 @@ async function verificarDesafio() {
 
     const dados = await accessOpen(prompt)
 
-    document.getElementById("question-prop").innerText = dados.comentario_do_codigo
+    document.getElementById("question-prop").innerText = `
+    DESAFIO: ${desafio_proposto}\n\n 
+    RESPOSTA: ${dados.comentario_do_codigo}\n\n 
+    Nota: ${dados.nota}`
+    
     if (dados.nota >= 6) {
-        await atualizarStatusUsuario(0, 10)
+        await atualizarStatusUsuario(0, 70)
         await editUser()
+        // createNewChallenge();
     }
 
 }
