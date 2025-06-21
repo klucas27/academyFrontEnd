@@ -27,12 +27,12 @@ export async function editUser() {
                     alert("Você Perdeu todas as suas Vidas, seus pontos foram Restaurados!")
                     atualizarStatusUsuario(0, 0)
                     editUser()
-                    document.getElementById("life-counts").innerText = data.usuario.life
-                    document.getElementById("points-counts").innerText = data.usuario.points
+                    document.getElementById("life-counts").innerText = `${data.usuario.life} Vidas`
+                    document.getElementById("points-counts").innerText = `${data.usuario.points} pts`
 
                 } else {
-                    document.getElementById("life-counts").innerText = data.usuario.life;
-                    document.getElementById("points-counts").innerText = data.usuario.points;
+                    document.getElementById("life-counts").innerText = `${data.usuario.life} Vidas`
+                    document.getElementById("points-counts").innerText = `${data.usuario.points} pts`
                 }
             }
         })
